@@ -1,3 +1,27 @@
-.title {
+body {
   text-align: center;
+  font-family: sans-serif;
+  color: #555;
+}
+
+.title {
+  color: #222;
+  margin: 10px 3px;
+}
+
+.subtitle {
+  margin: 0;
+}
+
+/* Axis */
+.axis path,
+.axis line {
+  fill: none;
+  stroke: black;
+  shape-rendering: crispEdges;
+}
+
+.axis text {
+  font-family: sans-serif;
+  font-size: 14px;
 }
