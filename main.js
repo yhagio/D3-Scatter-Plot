@@ -11,7 +11,7 @@ d3.json(data_url, function(err, jsonData) {
     left: 40
   };
 
-  var w = 700 - margin.right - margin.left;
+  var w = 800 - margin.right - margin.left;
   var h = 500 - margin.top - margin.bottom;
 
   var lastPlace = jsonData[jsonData.length-1]['Place'];
@@ -19,11 +19,9 @@ d3.json(data_url, function(err, jsonData) {
   var lastTime = jsonData[jsonData.length-1]['Seconds'];
 
   // Formatters for counts and times (converting numbers to Dates).
-  var formatTime = d3.time.format("%M:%S");
+  var formatTime = d3.time.format("%H:%M");
   var formatMMSS = function(d) { 
-    
-    var newTime = new Date(2012, 0, 1, 0, d); // Y, M, D, H, M
-    // console.log(newTime.getSeconds() + d);
+    var newTime = new Date(2016, 0, 1, 0, d); // Y, M, D, H, M
     newTime.setSeconds(newTime.getSeconds() + d);
     console.log(newTime);
     return formatTime(newTime);
@@ -49,7 +47,7 @@ d3.json(data_url, function(err, jsonData) {
   // Create X-axis
   var xAxisCreate = d3.svg.axis()
     .scale(xScale)
-    .ticks(5)
+    .ticks(6)
     .orient('bottom')
     .tickFormat(formatMMSS);
 
@@ -58,11 +56,11 @@ d3.json(data_url, function(err, jsonData) {
     .call(xAxisCreate)
     .attr({
       'class': 'axis',
-      'transform': 'translate('+margin.left+', '+(h-margin.top)+')'
+      'transform': 'translate('+margin.left+', '+h+')'
     });
     
   // Remove the left edge tick from x-axis (3:30)
-  d3.select(xAxis.selectAll('.tick')[0][xAxis.selectAll('.tick')[0].length-1]).remove();
+  // d3.select(xAxis.selectAll('.tick')[0][xAxis.selectAll('.tick')[0].length-1]).remove();
   
   // Add X-axis lable text
   xAxis.append('text')
@@ -90,7 +88,7 @@ d3.json(data_url, function(err, jsonData) {
     .call(yAxisCreate)
     .attr({
       'class': 'axis',
-      'transform': 'translate('+margin.right+', 0)'
+      'transform': 'translate('+margin.left+', 0)'
     });
 
   // Remove the bottom edge tick from y-axis (40)
