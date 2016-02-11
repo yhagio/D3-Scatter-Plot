@@ -5,14 +5,14 @@ d3.json(data_url, function(err, jsonData) {
 
   // Setup
   var margin = {
-    top: 40,
+    top: 50,
     right: 80,
     bottom: 40,
     left: 40
   };
 
   var w = 800 - margin.right - margin.left;
-  var h = 500 - margin.top - margin.bottom;
+  var h = 600 - margin.top - margin.bottom;
 
   var lastPlace = jsonData[jsonData.length-1]['Place'];
   var topTime = jsonData[0]['Seconds'];
@@ -23,7 +23,6 @@ d3.json(data_url, function(err, jsonData) {
   var formatMMSS = function(d) { 
     var newTime = new Date(2016, 0, 1, 0, d); // Y, M, D, H, M
     newTime.setSeconds(newTime.getSeconds() + d);
-    console.log(newTime);
     return formatTime(newTime);
   };
 
@@ -58,9 +57,6 @@ d3.json(data_url, function(err, jsonData) {
       'class': 'axis',
       'transform': 'translate('+margin.left+', '+h+')'
     });
-    
-  // Remove the left edge tick from x-axis (3:30)
-  // d3.select(xAxis.selectAll('.tick')[0][xAxis.selectAll('.tick')[0].length-1]).remove();
   
   // Add X-axis lable text
   xAxis.append('text')
@@ -75,7 +71,7 @@ d3.json(data_url, function(err, jsonData) {
 
   // Create Y-Scale
   var yScale = d3.scale.linear() // Ranking
-  .domain([lastPlace + 5, 1])
+  .domain([lastPlace + 5, 0])
   .range([h,0]);
 
   // Create Y-axis
@@ -91,7 +87,10 @@ d3.json(data_url, function(err, jsonData) {
       'transform': 'translate('+margin.left+', 0)'
     });
 
-  // Remove the bottom edge tick from y-axis (40)
+  // Remove the bottom edge tick from y-axis
+  d3.select(yAxis.selectAll('.tick')[0][0]).remove();
+  
+  // Remove the top edge tick from y-axis
   d3.select(yAxis.selectAll('.tick')[0][yAxis.selectAll('.tick')[0].length-1]).remove();
 
   // Add Y-axis label text
@@ -110,24 +109,25 @@ d3.json(data_url, function(err, jsonData) {
 
 
   // === Dots ===
-  // svg.selectAll('circle')
-  //   .data(jsonData)
-  //   .enter()
-  //   .append('circle')
-  //   .attr({
-  //     cx: function(d) {
-  //       var sec = topTime - d['Seconds'];
-  //       return (w-margin.right) - ( (w-margin.right) * sec / (60*3 + 30) );
-  //       // return xScale(sec);
-  //     },
-  //     cy: function(d) {
-  //       // return y(d['place']);
-  //       return ((d['Place'] * h ) / 40);
-  //     },
-  //     r: 4,
-  //     'fill': 'red'
-  //   });
+  // TODO : Fix the dots positions
+  svg.selectAll('circle')
+    .data(jsonData)
+    .enter()
+    .append('circle') // Create new circle
+    .attr({
+      cx: function(d) { // Translate x coordinate
+        console.log(d['Seconds'] - topTime);
+        return xScale(d['Seconds'] - topTime);
+      },
+      cy: function(d) { // Translate y coordinate
+        // console.log(d['Place']);
+        return yScale(d['Place']);
+      },
+      r: 4, // Radius of the dot
+      'fill': 'red' // Dot color
+    });
   
+  // TODO
   // === Add racer names next to each dot ===
   // svg.selectAll('text')
   //   .data(jsonData)
