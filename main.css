@@ -73,3 +73,10 @@ body {
   line-height: 16px;
   color: #fff;
 }
+
+/* Doping Description Label */
+#doping,
+#nodoping {
+  position: absolute;
+  font-size: 0.8em;
+}

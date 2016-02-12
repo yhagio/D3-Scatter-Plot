@@ -184,6 +184,34 @@ d3.json(data_url, function(err, jsonData) {
       'transform': 'translate(7, 4)'
     });
 
+  // === Doping: Dot & Description Label ===
+  svg.append('circle')
+    .attr({
+      cx: w-212,
+      cy: h-165,
+      r: 5,
+      'fill': 'red'
+    });
+
+  d3.select('#doping')
+    .style("left", w + "px")
+    .style("top", (h-100) + "px")
+    .html('<p>Riders with doping allegations</p>');
+  
+  // === Non-Doping: Dot & Description Label ===
+  svg.append('circle')
+    .attr({
+      cx: w-212,
+      cy: h-145,
+      r: 5,
+      'fill': 'green'
+    });
+
+  d3.select('#nodoping')
+    .style("left", w + "px")
+    .style("top", (h-80) + "px")
+    .html('<p>No doping allegations</p>');
+
 });
 
 function dopingDotColor(doping) {
