@@ -193,10 +193,13 @@ d3.json(data_url, function(err, jsonData) {
       'fill': 'red'
     });
 
-  d3.select('#doping')
-    .style("left", w + "px")
-    .style("top", (h-100) + "px")
-    .html('<p>Riders with doping allegations</p>');
+  svg.append('text')
+    .attr({
+      x: w-203,
+      y: h-160,
+      id: 'doping'
+    })
+    .text('Riders with doping allegations');
   
   // === Non-Doping: Dot & Description Label ===
   svg.append('circle')
@@ -207,10 +210,13 @@ d3.json(data_url, function(err, jsonData) {
       'fill': 'green'
     });
 
-  d3.select('#nodoping')
-    .style("left", w + "px")
-    .style("top", (h-80) + "px")
-    .html('<p>No doping allegations</p>');
+  svg.append('text')
+    .attr({
+      x: w-203,
+      y: h-140,
+      id: 'doping'
+    })
+    .text('No doping allegations');
 
 });
 
