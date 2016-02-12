@@ -26,7 +26,6 @@ d3.json(data_url, function(err, jsonData) {
     return formatTime(newTime);
   };
 
-
   // SVG
   var svg = d3.select('body')
     .append('svg')
@@ -34,8 +33,6 @@ d3.json(data_url, function(err, jsonData) {
       width: w + margin.right + margin.left,
       height: h + margin.top + margin.bottom
     });
-
-
 
   // Create X-Scale
   // Domain: Largest difference from top + 30s to 0 (Top)
@@ -131,9 +128,9 @@ d3.json(data_url, function(err, jsonData) {
         .duration(1000)
         .attr('r', 7);
       
-      // Tooltip animation
+      // Add Tooltip
       d3.select('#tooltip')
-        .style("left", 250 + "px")
+        .style("left", adjustTooltipPosition(window.innerWidth) + "px")
         .style("top", 150 + "px")
         .select("#value")
           .html(
@@ -141,7 +138,7 @@ d3.json(data_url, function(err, jsonData) {
             '<p><span>Year '+d['Year']+' / Time '+d['Time']+'</span></p><br/>'+
             '<p>'+dopingText(d['Doping'])+'</p>');
 
-      //Show the tooltip
+      //Show the tooltip animation
       d3.select('#tooltip')
         .transition()
         .ease('quad')
@@ -150,13 +147,14 @@ d3.json(data_url, function(err, jsonData) {
 
     })
     .on('mouseout', function(d) {
-      // Hide the tooltip on mouseout
+      // The circle dot animation
       d3.select(this)
         .transition()
         .ease('elastic')
         .duration(1000)
         .attr('r', 5);
-
+      
+      // Tooltip animation
       d3.select('#tooltip')
         .transition()
         .ease('quad')
@@ -220,11 +218,25 @@ d3.json(data_url, function(err, jsonData) {
 
 });
 
+// Changes the dot color depending on racer's doping status
 function dopingDotColor(doping) {
   return doping ? 'red': 'green';
 }
 
+// Display 'No Doping' if the racer did not use doping
+// instead of displaying nothing
 function dopingText(text) {
   return text ? text : 'No Doping';
+}
+
+// Adjust the tooltip position depending on window inner width
+function adjustTooltipPosition(windowInnerWidth) {
+  if ((windowInnerWidth > 900) && (windowInnerWidth <= 1010)) {
+    return 150;
+  }
+  if (windowInnerWidth > 1010) {
+    return 200;
+  }
+  return 100;
 }
 

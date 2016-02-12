@@ -1,4 +1,6 @@
 body {
+  min-width: 900px;
+  max-width: 1100px;
   text-align: center;
   font-family: sans-serif;
   color: #555;
