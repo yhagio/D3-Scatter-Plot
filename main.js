@@ -104,50 +104,93 @@ d3.json(data_url, function(err, jsonData) {
     .style('text-anchor', 'end')
     .text('Ranking');
 
-
-
-
-
   // === Dots ===
-  // TODO : Fix the dots positions
   svg.selectAll('circle')
     .data(jsonData)
     .enter()
     .append('circle') // Create new circle
     .attr({
       cx: function(d) { // Translate x coordinate
-        console.log(d['Seconds'] - topTime);
         return xScale(d['Seconds'] - topTime);
       },
       cy: function(d) { // Translate y coordinate
-        // console.log(d['Place']);
         return yScale(d['Place']);
       },
-      r: 4, // Radius of the dot
-      'fill': 'red' // Dot color
+      r: 5, // Radius of the dot
+      'fill': function(d) { // Dot color
+        return dopingDotColor(d['Doping'])
+      }
+    })
+    // Creating tooltp on mouseover event
+    .on('mouseover', function(d) {
+
+      //Circle dot animation
+      d3.select(this)
+        .transition()
+        .ease('elastic')
+        .duration(1000)
+        .attr('r', 7);
+      
+      // Tooltip animation
+      d3.select('#tooltip')
+        .style("left", 250 + "px")
+        .style("top", 150 + "px")
+        .select("#value")
+          .html(
+            '<strong>'+d['Name']+'</strong>'+
+            '<p><span>Year '+d['Year']+' / Time '+d['Time']+'</span></p><br/>'+
+            '<p>'+dopingText(d['Doping'])+'</p>');
+
+      //Show the tooltip
+      d3.select('#tooltip')
+        .transition()
+        .ease('quad')
+        .duration(500)
+        .style("opacity", 1);
+
+    })
+    .on('mouseout', function(d) {
+      // Hide the tooltip on mouseout
+      d3.select(this)
+        .transition()
+        .ease('elastic')
+        .duration(1000)
+        .attr('r', 5);
+
+      d3.select('#tooltip')
+        .transition()
+        .ease('quad')
+        .duration(500)
+        .style("opacity", 0);
     });
   
-  // TODO
   // === Add racer names next to each dot ===
-  // svg.selectAll('text')
-  //   .data(jsonData)
-  //   .enter()
-  //   .append('text')
-  //   .attr({
-  //     x: function(d) {
-  //       var sec = diffTimeWithTop(d['Seconds'], topTime);
-        
-  //       return (w-margin.right) - ((w-margin.right) * sec / 210);
-  //     },
-  //     y: function(d) {
-  //       return ((d['Place'] * h ) / 40) + 6;
-  //     },
-  //     'font-size': '0.7em'
-  //   })
-  //   .text(function(d) {
-  //     return d['Name'];
-  //   });
-
+  svg.append('g')
+    .selectAll('text')
+    .data(jsonData)
+    .enter()
+    .append('text')
+    .text(function(d) {
+      return d['Name'];
+    })
+    .attr({
+      x: function(d) {
+        return xScale(d['Seconds'] - topTime);
+      },
+      y: function(d) {
+        return yScale(d['Place']);
+      },
+      'font-size': '0.6em',
+      'transform': 'translate(7, 4)'
+    });
 
 });
+
+function dopingDotColor(doping) {
+  return doping ? 'red': 'green';
+}
+
+function dopingText(text) {
+  return text ? text : 'No Doping';
+}
 
