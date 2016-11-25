@@ -1,4 +1,4 @@
-var data_url = 'https://raw.githubusercontent.com/FreeCodeCamp/ProjectReferenceData/master/cyclist-data.json';
+var data_url = 'cycle-data.json';
 
 d3.json(data_url, function(err, jsonData) {
   if (err) throw err;

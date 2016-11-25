@@ -4,10 +4,6 @@ body {
   text-align: center;
   font-family: sans-serif;
   color: #555;
-  background-image:
-    linear-gradient(
-      #FFFFFF, #99FFFF
-    );
 }
 
 /* Header Part */
